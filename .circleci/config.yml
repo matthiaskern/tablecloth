@@ -1,6 +1,9 @@
 version: 2
 jobs:
   build:
+    environment:
+      NPM_CONFIG_PREFIX: "~/.npm-global"
+
     docker:
       - image: circleci/node:10.5
 
@@ -9,7 +12,14 @@ jobs:
     steps:
       - checkout
 
-      - run: npm install -g esy
+      - run:
+          name: Install esy
+          command: |
+            mkdir -p $NPM_CONFIG_PREFIX
+            npm config set prefix $NPM_CONFIG_PREFIX
+            eval "echo 'export PATH=$PATH:$(npm -g bin)'" >> $BASH_ENV 
+            npm install -g esy
 
       # install dependencies
       - run: esy
+      - run: esy ./run-integration-test.sh
