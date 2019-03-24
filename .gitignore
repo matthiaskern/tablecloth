@@ -1,4 +1,6 @@
 .merlin
+opam.esy.lock
+/_esy
 /native/tablecloth-native.install
 /native/_build
 /bs/node_modules
